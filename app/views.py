@@ -15,6 +15,7 @@ import os
 # from config import COUNTRY_LIST
 import pickle
 import json
+import hashlib
 
 import requests
 
@@ -37,28 +38,55 @@ def base():
         return "post" 
 
 
-# @app.route("/weixin")
-# def weixin():
-# 	try:
-#         # data = web.input()
-#         data = ["ss","ddd"]
-#         if len(data) == 0:
-#             return "hello, this is handle view"
-#         signature = data.signature
-#         timestamp = data.timestamp
-#         nonce = data.nonce
-#         echostr = data.echostr
-#         token = "xxxx" #请按照公众平台官网\基本配置中信息填写
+@app.route("/weixin")
+def weixin():
+    try:
+        data = request.args
+        if len(data) == 0:
+            return "hello, this is handle view"
+        signature = data.get("signature","0")
+        timestamp = data.get("timestamp","0")
+        nonce = data.get("nonce","0")
+        echostr = data.get("echostr","0")
+        token = "weixin" #请按照公众平台官网\基本配置中信息填写
 
-#         list = [token, timestamp, nonce]
-#         list.sort()
-#         sha1 = hashlib.sha1()
-#         map(sha1.update, list)
-#         hashcode = sha1.hexdigest()
-#         print "handle/GET func: hashcode, signature: ", hashcode, signature
-#         if hashcode == signature:
-#             return echostr
-#         else:
-#             return ""
-#     except Exception, Argument:
-#         return Argument
+        print str(data)
+        list = [token, timestamp, nonce]
+        list.sort()
+        sha1 = hashlib.sha1()
+        map(sha1.update, list)
+        hashcode = sha1.hexdigest()
+        print "handle/GET func: hashcode, signature: ", hashcode, signature
+        if hashcode == signature:
+            return echostr
+        else:
+            return "ok"
+    except:
+
+        return "fail"
+
+	# try:
+ #        # data = web.input()
+ #        data = ["ss","ddd"]
+ #        # data = request.args
+ #        if len(data) == 0:
+ #            return "hello, this is handle view"
+ #        signature = data.get("signature","0")
+ #        timestamp = data.get("timestamp","0")
+
+ #        nonce = data.get("nonce","0")
+ #        echostr = data.get("echostr","0")
+ #        token = "weixin" #请按照公众平台官网\基本配置中信息填写
+
+ #        list = [token, timestamp, nonce]
+ #        list.sort()
+ #        sha1 = hashlib.sha1()
+ #        map(sha1.update, list)
+ #        hashcode = sha1.hexdigest()
+ #        print "handle/GET func: hashcode, signature: ", hashcode, signature
+ #        if hashcode == signature:
+ #            return echostr
+ #        else:
+ #            return ""
+ #    except Exception, Argument:
+ #        return Argument
