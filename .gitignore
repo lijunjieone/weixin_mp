@@ -1,0 +1,10 @@
+*.out
+*.pyc
+
+.DS_Store
+u*.json
+tmp
+flask
+static/uploads/
+
+app/static/uploads/
