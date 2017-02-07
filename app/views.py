@@ -37,8 +37,11 @@ def base():
         state = request.form.get("state","1")
         return "post" 
 
+@app.route("/weixin",methods=["POST"])
+def weixin_post():
+    return "post"
 
-@app.route("/weixin")
+@app.route("/weixin",methods=["GET"])
 def weixin():
     try:
         data = request.args
@@ -64,6 +67,24 @@ def weixin():
     except:
 
         return "fail"
+
+
+# def handle():
+#     try:
+#             webData = web.data()
+#             print "Handle Post webdata is ", webData   #后台打日志
+#             recMsg = receive.parse_xml(webData)
+#             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
+#                 toUser = recMsg.FromUserName
+#                 fromUser = recMsg.ToUserName
+#                 content = "test"
+#                 replyMsg = reply.TextMsg(toUser, fromUser, content)
+#                 return replyMsg.send()
+#             else:
+#                 print "暂且不处理"
+#                 return "success"
+#         except Exception, Argment:
+#             return Argment
 
 	# try:
  #        # data = web.input()
