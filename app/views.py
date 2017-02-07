@@ -26,27 +26,39 @@ def first():
 def index():
     return render_template("index.html")
 
-@app.route("/weixin")
-def weixin():
-	try:
-        data = web.input()
-        if len(data) == 0:
-            return "hello, this is handle view"
-        signature = data.signature
-        timestamp = data.timestamp
-        nonce = data.nonce
-        echostr = data.echostr
-        token = "xxxx" #请按照公众平台官网\基本配置中信息填写
+@app.route("/test",methods=["GET","POST"])
+def base():
+    if request.method == "GET":
+        release = request.args.get("release","0")
+        print release
+        return str(request.args)
+    else :
+        state = request.form.get("state","1")
+        return "post" 
 
-        list = [token, timestamp, nonce]
-        list.sort()
-        sha1 = hashlib.sha1()
-        map(sha1.update, list)
-        hashcode = sha1.hexdigest()
-        print "handle/GET func: hashcode, signature: ", hashcode, signature
-        if hashcode == signature:
-            return echostr
-        else:
-            return ""
-    except Exception, Argument:
-        return Argument
+
+# @app.route("/weixin")
+# def weixin():
+# 	try:
+#         # data = web.input()
+#         data = ["ss","ddd"]
+#         if len(data) == 0:
+#             return "hello, this is handle view"
+#         signature = data.signature
+#         timestamp = data.timestamp
+#         nonce = data.nonce
+#         echostr = data.echostr
+#         token = "xxxx" #请按照公众平台官网\基本配置中信息填写
+
+#         list = [token, timestamp, nonce]
+#         list.sort()
+#         sha1 = hashlib.sha1()
+#         map(sha1.update, list)
+#         hashcode = sha1.hexdigest()
+#         print "handle/GET func: hashcode, signature: ", hashcode, signature
+#         if hashcode == signature:
+#             return echostr
+#         else:
+#             return ""
+#     except Exception, Argument:
+#         return Argument
