@@ -1,4 +1,4 @@
-#!#flask/bin/python
+#!flask/bin/python
 #coding:utf-8
 from app import app
 from flask import Flask, request, redirect, url_for, render_template, abort, session, escape, send_from_directory, flash,g,make_response
@@ -19,6 +19,8 @@ import hashlib
 import receive
 import reply
 
+import menu
+
 import requests
 
 @app.route('/')
@@ -29,6 +31,11 @@ def first():
 def index():
     return render_template("index.html")
 
+
+@app.route("/create_menu")
+def menu2():
+    menu.create()
+    return "ok"
 @app.route("/test",methods=["GET","POST"])
 def base():
     if request.method == "GET":
@@ -77,25 +84,32 @@ def handleGet(data):
         return "fail"
 
 
-def handlePost(data):
+def handlePost(webData):
     try:
-        print "Handle Post webdata is ", data   #后台打日志
-        # if data.has_key("nonce"):
-            # return handleGet(data)
-        # print "new"
-        recMsg = receive.parse_xml(data)
-        if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
+        # webData = web.data()
+        print "Handle Post webdata is ", webData   #后台打日志
+        recMsg = receive.parse_xml(webData)
+        if isinstance(recMsg, receive.Msg):
             toUser = recMsg.FromUserName
             fromUser = recMsg.ToUserName
-            content = "test"
-            replyMsg = reply.TextMsg(toUser, fromUser, content)
-            return replyMsg.send()
-        else:
-            print "暂且不处理"
-            return "success"
+            if recMsg.MsgType == 'text':
+                content = "test"
+                replyMsg = reply.TextMsg(toUser, fromUser, content)
+                return replyMsg.send()
+            if recMsg.MsgType == 'image':
+                mediaId = recMsg.MediaId
+                replyMsg = reply.ImageMsg(toUser, fromUser, mediaId)
+                return replyMsg.send()
+        if isinstance(recMsg, receive.EventMsg):
+            if recMsg.Event == 'CLICK':
+                if recMsg.Eventkey == 'mpGuide':
+                    content = u"编写中，尚未完成".encode('utf-8')
+                    replyMsg = reply.TextMsg(toUser, fromUser, content)
+                    return replyMsg.send()
+        print "暂且不处理"
+        return reply.Msg().send()
     except Exception, Argment:
-            return Argment
-
+        return Argment
 	# try:
  #        # data = web.input()
  #        data = ["ss","ddd"]
