@@ -42,10 +42,11 @@ def base():
 
 @app.route("/weixin",methods=["GET","POST"])
 def weixin():
-    data = request.args
     if request.method == "GET":
+        data = request.args
         return handleGet(data)
     else:
+        data = request.form
         return handlePost(data)
 
 
@@ -79,8 +80,9 @@ def handleGet(data):
 def handlePost(data):
     try:
         print "Handle Post webdata is ", data   #后台打日志
-        if data.has_key("nonce"):
-            return handleGet(data)
+        # if data.has_key("nonce"):
+            # return handleGet(data)
+        # print "new"
         recMsg = receive.parse_xml(data)
         if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
             toUser = recMsg.FromUserName
