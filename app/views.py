@@ -39,11 +39,8 @@ def base():
         state = request.form.get("state","1")
         return "post" 
 
-@app.route("/weixin",methods=["POST"])
-def weixin_post():
-    return "post"
 
-@app.route("/weixin",methods=["GET"])
+@app.route("/weixin",methods=["GET","POST"])
 def weixin():
     data = request.args
     if request.method == "GET":
