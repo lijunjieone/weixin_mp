@@ -16,6 +16,8 @@ import os
 import pickle
 import json
 import hashlib
+import receive
+import reply
 
 import requests
 
@@ -43,8 +45,16 @@ def weixin_post():
 
 @app.route("/weixin",methods=["GET"])
 def weixin():
+    data = request.args
+    if request.method == "GET":
+        handleGet(data)
+    else:
+        handlePost(data)
+
+
+
+def handleGet(data):
     try:
-        data = request.args
         if len(data) == 0:
             return "hello, this is handle view"
         signature = data.get("signature","0")
@@ -69,22 +79,21 @@ def weixin():
         return "fail"
 
 
-# def handle():
-#     try:
-#             webData = web.data()
-#             print "Handle Post webdata is ", webData   #后台打日志
-#             recMsg = receive.parse_xml(webData)
-#             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
-#                 toUser = recMsg.FromUserName
-#                 fromUser = recMsg.ToUserName
-#                 content = "test"
-#                 replyMsg = reply.TextMsg(toUser, fromUser, content)
-#                 return replyMsg.send()
-#             else:
-#                 print "暂且不处理"
-#                 return "success"
-#         except Exception, Argment:
-#             return Argment
+def handlePost(data):
+    try:
+        print "Handle Post webdata is ", data   #后台打日志
+        recMsg = receive.parse_xml(data)
+        if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
+            toUser = recMsg.FromUserName
+            fromUser = recMsg.ToUserName
+            content = "test"
+            replyMsg = reply.TextMsg(toUser, fromUser, content)
+            return replyMsg.send()
+        else:
+            print "暂且不处理"
+            return "success"
+    except Exception, Argment:
+            return Argment
 
 	# try:
  #        # data = web.input()
