@@ -44,6 +44,7 @@ def base():
         return str(request.args)
     else :
         state = request.form.get("state","1")
+        print state
         return "post" 
 
 
@@ -54,6 +55,9 @@ def weixin():
         return handleGet(data)
     else:
         data = request.form
+        if len(data) == 0:
+            data = request.args
+        # return str(data)
         return handlePost(data)
 
 
@@ -88,6 +92,8 @@ def handlePost(webData):
     try:
         # webData = web.data()
         print "Handle Post webdata is ", webData   #后台打日志
+        if webData.has_key("signature"):
+            return handleGet(webData)
         recMsg = receive.parse_xml(webData)
         if isinstance(recMsg, receive.Msg):
             toUser = recMsg.FromUserName
