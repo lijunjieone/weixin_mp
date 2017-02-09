@@ -47,9 +47,9 @@ def weixin_post():
 def weixin():
     data = request.args
     if request.method == "GET":
-        handleGet(data)
+        return handleGet(data)
     else:
-        handlePost(data)
+        return handlePost(data)
 
 
 
