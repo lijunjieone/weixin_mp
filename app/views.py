@@ -96,7 +96,7 @@ def handlePost(webData):
         # if webData.has_key("signature"):
             # return handleGet(webData)
         recMsg = receive.parse_xml(webData)
-        # print recMsg
+        print recMsg
 
         if isinstance(recMsg, receive.Msg):
             toUser = recMsg.FromUserName
@@ -110,12 +110,16 @@ def handlePost(webData):
                 replyMsg = reply.ImageMsg(toUser, fromUser, mediaId)
                 return replyMsg.send()
         if isinstance(recMsg, receive.EventMsg):
+            toUser = recMsg.FromUserName
+            fromUser = recMsg.ToUserName
             if recMsg.Event == 'CLICK':
                 if recMsg.Eventkey == 'mpGuide':
-                    content = u"编写中，尚未完成".encode('utf-8')
+                    #content = u"编写中，尚未完成".encode('utf-8')
+                    content = u"你的号码是1号".encode('utf-8')
                     replyMsg = reply.TextMsg(toUser, fromUser, content)
                     return replyMsg.send()
         print "暂且不处理"
+
         return reply.Msg().send()
         # return webData
     except Exception, Argment:

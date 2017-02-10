@@ -34,10 +34,7 @@ class EventMsg(object):
         self.CreateTime = xmlData.find('CreateTime').text
         self.MsgType = xmlData.find('MsgType').text
         self.Event = xmlData.find('Event').text
-class Click(EventMsg):
-    def __init__(self, xmlData):
-        EventMsg.__init__(self, xmlData)
-        self.Eventkey = xmlData.find('EventKey').text
+
 
 
 class Msg(object):
@@ -46,7 +43,25 @@ class Msg(object):
         self.FromUserName = xmlData.find('FromUserName').text
         self.CreateTime = xmlData.find('CreateTime').text
         self.MsgType = xmlData.find('MsgType').text
-        self.MsgId = xmlData.find('MsgId').text
+        try:
+            self.MsgId = xmlData.find('MsgId').text
+        except:
+            pass
+        try:
+            self.Event = xmlData.find('Event').text
+        except:
+            pass
+
+
+class Click(EventMsg):
+    def __init__(self, xmlData):
+        EventMsg.__init__(self, xmlData)
+        self.Eventkey = xmlData.find('EventKey').text
+
+    def __str__(self):
+        return "test,%s"%(self.Eventkey)
+
+
 
 class TextMsg(Msg):
     def __init__(self, xmlData):
