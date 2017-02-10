@@ -54,7 +54,7 @@ def weixin():
         data = request.args
         return handleGet(data)
     else:
-        data = request.form
+        data = request.data
         if len(data) == 0:
             data = request.args
         # return str(data)
