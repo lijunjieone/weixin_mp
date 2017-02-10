@@ -18,7 +18,7 @@ import json
 import hashlib
 import receive
 import reply
-
+import traceback
 import menu
 
 import requests
@@ -92,9 +92,12 @@ def handlePost(webData):
     try:
         # webData = web.data()
         print "Handle Post webdata is ", webData   #后台打日志
-        if webData.has_key("signature"):
-            return handleGet(webData)
+        # return webData
+        # if webData.has_key("signature"):
+            # return handleGet(webData)
         recMsg = receive.parse_xml(webData)
+        # print recMsg
+
         if isinstance(recMsg, receive.Msg):
             toUser = recMsg.FromUserName
             fromUser = recMsg.ToUserName
@@ -114,7 +117,10 @@ def handlePost(webData):
                     return replyMsg.send()
         print "暂且不处理"
         return reply.Msg().send()
+        # return webData
     except Exception, Argment:
+        exstr = traceback.format_exc()
+        print exstr
         return Argment
 	# try:
  #        # data = web.input()
