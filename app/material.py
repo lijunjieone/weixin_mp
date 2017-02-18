@@ -56,8 +56,7 @@ class Material(object):
         print urlResp.read()
 
 
-
-if __name__ == '__main__':
+def createMaterial():
     myMaterial = Material()
     accessToken = Basic().get_access_token()
     news =(
@@ -82,3 +81,5 @@ if __name__ == '__main__':
     myMaterial.add_news(accessToken, news)
 
 
+if __name__ == '__main__':
+    createMaterial()
